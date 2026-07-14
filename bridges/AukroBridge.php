@@ -59,13 +59,9 @@ class AukroBridge extends BridgeAbstract
     ]];
     const CACHE_TIMEOUT = 900;
 
-    public function getName(): string
+    public function getIcon(): string
     {
-        $text = $this->getInput('text');
-        if ($text) {
-            return 'Aukro.cz – ' . $text;
-        }
-        return parent::getName();
+        return ''; //find png image
     }
 
     public function getURI(): string
@@ -128,9 +124,7 @@ class AukroBridge extends BridgeAbstract
             $seoUrl = $item['seoUrl'] ?? 'nabidka';
             $uri = self::URI . '/' . $seoUrl . '-' . $itemId;
 
-            $price = isset($item['price'])
-                ? number_format($item['price']['amount'], 0, ',', ' ') . ' ' . $item['price']['currency']
-                : '';
+            $price = isset($item['price']) ? number_format($item['price']['amount'], 0, ',', ' ') . ' ' . $item['price']['currency'] : '';
 
             $image = $item['titleImageUrl'] ?? null;
             $seller = $item['seller']['showName'] ?? $item['sellerLogin'] ?? '';
@@ -145,11 +139,11 @@ class AukroBridge extends BridgeAbstract
                 }
             }
 
-            $content = '';
+            $content = '<p><strong>' . e($item['itemName']) . '</strong></p>';
             if ($image) {
                 $content .= '<p><img src="' . e($image) . '" alt="' . e($item['itemName']) . '" /></p>';
             }
-            $content .= '<p><strong>Price: ' . e($price) . '</strong></p>';
+            $content .= '<p>Price: ' . e($price) . '</p>';
             if ($condition) {
                 $content .= '<p>Condition: ' . e($condition) . '</p>';
             }
